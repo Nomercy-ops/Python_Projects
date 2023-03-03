@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Movie Search App</title>
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-kMyGk+IQ9rpL0Z0PmaSPlfAKjJeIwln0Rhnu4bh4Q4F4qb43C47BytXmTAljQ2rGr1bHukGm7VnJdDj+7V8xSQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Google Fonts CDN -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__logo">
+                <img src="static/images/movie-finder.gif" alt="Logo">
+            </div>
+            <form method="GET" action="/movies" class="search-form">
+                <input type="text" id="title" name="title" placeholder="Enter movie title" class="search-form__input">
+                <button type="submit" class="search-form__button"><i class="fas fa-search"></i>Search</button>
+            </form>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            {% if movie_list %}
+            <div class="movie-list">
+                {% for movie in movie_list %}
+                <div class="movie-list__item">
+                    <div class="movie-list__item-img">
+                        {% if movie.Poster != "N/A" %}
+                        <img src="{{ movie.Poster }}" alt="{{ movie.Title }}">
+                        {% else %}
+                        <img src="/static/images/no_image.png" alt="{{ movie.Title }}">
+                        {% endif %}
+                    </div>
+                    <div class="movie-list__item-details">
+                        <h2 class="movie-list__item-title">{{ movie.Title }}</h2>
+                        <p class="movie-list__item-plot">{{ movie.Plot }}</p>
+                        <ul class="movie-list__item-details-list">
+                            <li><span>Year:</span> {{ movie.Year }}</li>
+                            <li><span>IMDB Rating:</span> {{ movie.imdbRating }}</li>
+                            <li><span>Genre:</span> {{ movie.Genre }}</li>
+                            <li><span>Director:</span> {{ movie.Director }}</li>
+                            <li><span>Actors:</span> {{ movie.Actors }}</li>
+                        </ul>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+                <p class="no-results">{{ message }}</p>
+            {% endif %}
+        </div>
+    </main>
+
+    <!-- Custom JS
+    <script src="/static/js/main.js"></script>-->
+</body>
+
+</html>
