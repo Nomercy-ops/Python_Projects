@@ -2,18 +2,18 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import requests
-from configparser import ConfigParser
+import os
 
 # reading config files
-config = ConfigParser()
-config.read('config.ini')
+from dotenv import load_dotenv
+load_dotenv()
 
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-OMDB_API_KEY = config.get('API','key')
+OMDB_API_KEY = os.getenv('KEY')
 
 @app.get("/")
 async def read_form(request: Request):
