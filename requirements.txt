@@ -4,3 +4,4 @@ requests
 jinja2
 python-dotenv
 bs4
+pillow
