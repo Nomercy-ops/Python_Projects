@@ -22,15 +22,15 @@
 <body>
     <nav>
         <div class="logo">
-          <img src="static/images/logo.png" alt="Logo">
+            <img src="static/images/logo.png" alt="Logo">
         </div>
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
         </ul>
-      </nav>
-      
+    </nav>
+
 
     <header class="header">
         <div class="container">
@@ -93,26 +93,28 @@
                 slides[i].style.display = "none";
             }
 
-            // Fetch the image URL from your Python code using AJAX
+            // Fetch a new movie poster URL from your Python code using AJAX
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     var response = JSON.parse(xhr.responseText);
                     var posterUrl = response.poster_url;
+
                     // Set the image URL as the src attribute of the img tags
                     for (var i = 0; i < slides.length; i++) {
                         slides[i].getElementsByTagName("img")[0].src = posterUrl;
                     }
-                    // Call the showSlides() function again after a 5-second delay
-                    setTimeout(showSlides, 5000);
                 }
             };
             xhr.open("GET", "/random-movie-poster", true);
             xhr.send();
 
+            // Call the showSlides() function again after a 6-second delay
+            setTimeout(showSlides, 30000);
+
             slideIndex++;
             if (slideIndex > slides.length) {
-                slideIndex = 1
+                slideIndex = 1;
             }
             slides[slideIndex - 1].style.display = "block";
         }
@@ -129,9 +131,8 @@
         function currentSlide(n) {
             showSlides(slideIndex = n);
         }
-
-
     </script>
+
 
 </body>
 

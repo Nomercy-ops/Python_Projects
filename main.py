@@ -1,13 +1,14 @@
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
 import requests
 import os
-from bs4 import BeautifulSoup
+import random
 from PIL import Image
+
+
 
 # reading config files
 from dotenv import load_dotenv
@@ -15,20 +16,6 @@ load_dotenv()
 
 app = FastAPI()
 
-origins = [
-    "http://localhost",
-    "http://localhost:8000",
-    "https://movies-reccomender.onrender.com",
-    # Add any other origins here that need to be allowed
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
@@ -36,6 +23,7 @@ templates = Jinja2Templates(directory="templates")
 # api key here
 OMDB_API_KEY = os.getenv('KEY1')
 TMDB_API_KEY = os.getenv('KEY2')
+API_KEY = os.getenv('KEY3')
 
 
 @app.get("/")
@@ -53,8 +41,10 @@ def image_url_filter(url):
     except Exception as e:
         print(e)
         return "static/images/no_image.png"
-    
+
 # api code
+
+
 @app.get("/movies")
 async def get_movie(request: Request, title: str):
     # First, try to fetch the movie details from OMDB API
@@ -112,7 +102,7 @@ async def get_movie(request: Request, title: str):
                 }
                 movie_list.append(unified_data)
 
-    # If still no movie details were returned or any error occurred, 
+    # If still no movie details were returned or any error occurred,
     if not movie_list:
         message = "No results found."
         return JSONResponse({"error": "Movie not found"}, status_code=404)
@@ -122,22 +112,23 @@ async def get_movie(request: Request, title: str):
     print(movie_list)
     return templates.TemplateResponse("search_result.html", {"request": request, "movie_list": movie_list, "message": message})
 
-
-@ app.get('/random-movie-poster')
+@app.get('/random-movie-poster')
 async def get_random_movie_poster():
-    # Make a GET request to the website
-    response=requests.get(
-        'https://www.bestrandoms.com/random-movie-generator')
-    # Parse the HTML content using BeautifulSoup
-    print(response)
-    soup=BeautifulSoup(response.text, 'html.parser')
-    print(soup)
-    # Find the div that contains the poster image
-    poster_div=soup.find('div', {'class': 'content'})
+    # Load a list of movie names from a text file
+    with open('m_name.txt') as f:
+        movie_names = f.read().splitlines()
 
-    if poster_div is not None:
-        # Get the URL of the poster image
-        poster_url="https://" + \
-        poster_div.find('img')['src'].replace('//', '').strip()
-        # Return the URL of the poster image
+    # Choose a random movie name from the list
+    movie_name = random.choice(movie_names)
+
+    # Send a request to the OMDb API to get the details of the random movie, including its poster URL
+    response = requests.get(f'http://www.omdbapi.com/?apikey={API_KEY}&t={movie_name}&type=movie&plot=full')
+    data = response.json()
+    poster_url = data.get('Poster')
+
+    # Return the URL of the poster image
+    if poster_url:
         return {'poster_url': poster_url}
+    else:
+        raise HTTPException(status_code=500, detail='Failed to get a random movie poster')
+
