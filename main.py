@@ -129,7 +129,9 @@ async def get_random_movie_poster():
     response=requests.get(
         'https://www.bestrandoms.com/random-movie-generator')
     # Parse the HTML content using BeautifulSoup
+    print(response)
     soup=BeautifulSoup(response.text, 'html.parser')
+    print(soup)
     # Find the div that contains the poster image
     poster_div=soup.find('div', {'class': 'content'})
 
