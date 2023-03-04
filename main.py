@@ -116,8 +116,10 @@ async def get_random_movie_poster():
     soup=BeautifulSoup(response.text, 'html.parser')
     # Find the div that contains the poster image
     poster_div=soup.find('div', {'class': 'content'})
-    # Get the URL of the poster image
-    poster_url="https://" + \
+
+    if poster_div is not None:
+        # Get the URL of the poster image
+        poster_url="https://" + \
         poster_div.find('img')['src'].replace('//', '').strip()
-    # Return the URL of the poster image
-    return {'poster_url': poster_url}
+        # Return the URL of the poster image
+        return {'poster_url': poster_url}
