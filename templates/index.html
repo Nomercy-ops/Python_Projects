@@ -9,8 +9,8 @@
 
     <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-    integrity="sha384-kMyGk+IQ9rpL0Z0PmaSPlfAKjJeIwln0Rhnu4bh4Q4F4qb43C47BytXmTAljQ2rG"
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+        integrity="sha384-kMyGk+IQ9rpL0Z0PmaSPlfAKjJeIwln0Rhnu4bh4Q4F4qb43C47BytXmTAljQ2rG" crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
 
     <!-- Google Fonts CDN -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
@@ -20,6 +20,18 @@
 </head>
 
 <body>
+    <nav>
+        <div class="logo">
+          <img src="static/images/logo.png" alt="Logo">
+        </div>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+      
+
     <header class="header">
         <div class="container">
             <div class="header__logo">
@@ -32,41 +44,96 @@
         </div>
     </header>
 
-    <main class="main">
-        <div class="container">
-            {% if movie_list %}
-            <div class="movie-list">
-                {% for movie in movie_list %}
-                <div class="movie-list__item">
-                    <div class="movie-list__item-img">
-                        {% if movie.Poster != "N/A" %}
-                        <img src="{{ movie.Poster }}" alt="{{ movie.Title }}">
-                        {% else %}
-                        <img src="/static/images/no_image.png" alt="{{ movie.Title }}">
-                        {% endif %}
-                    </div>
-                    <div class="movie-list__item-details">
-                        <h2 class="movie-list__item-title">{{ movie.Title }}</h2>
-                        <p class="movie-list__item-plot">{{ movie.Plot }}</p>
-                        <ul class="movie-list__item-details-list">
-                            <li><span>Year:</span> {{ movie.Year }}</li>
-                            <li><span>IMDB Rating:</span> {{ movie.imdbRating }}</li>
-                            <li><span>Genre:</span> {{ movie.Genre }}</li>
-                            <li><span>Director:</span> {{ movie.Director }}</li>
-                            <li><span>Actors:</span> {{ movie.Actors }}</li>
-                        </ul>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            {% else %}
-                <p class="no-results">{{ message }}</p>
-            {% endif %}
-        </div>
-    </main>
 
-    <!-- Custom JS
-    <script src="/static/js/main.js"></script>-->
+    <!-- Slideshow container -->
+    <div class="slideshow-container">
+
+        <!-- Full-width images with number and caption text -->
+        <div class="mySlides fade">
+            <img src="" style="width:30%">
+        </div>
+
+        <div class="mySlides fade">
+            <img src="" style="width:30%">
+        </div>
+
+        <div class="mySlides fade">
+            <img src="" style="width:30%">
+        </div>
+
+        <!-- Next and previous buttons -->
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+    </div>
+    <br>
+
+    <!-- The dots/circles -->
+    <div style="text-align:center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+    </div>
+
+    <!-- footer code -->
+    <footer class="footer">
+        <div class="container">`
+            <div class="footer__text">
+                &copy; 2023 Rikesh Chhetri. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+
+
+    <!-- <-- Custom JS -->
+    <!-- <-- Custom JS -->
+    <script>
+        function showSlides() {
+            var slides = document.getElementsByClassName("mySlides");
+            for (var i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+
+            // Fetch the image URL from your Python code using AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    var posterUrl = response.poster_url;
+                    // Set the image URL as the src attribute of the img tags
+                    for (var i = 0; i < slides.length; i++) {
+                        slides[i].getElementsByTagName("img")[0].src = posterUrl;
+                    }
+                    // Call the showSlides() function again after a 5-second delay
+                    setTimeout(showSlides, 5000);
+                }
+            };
+            xhr.open("GET", "/random-movie-poster", true);
+            xhr.send();
+
+            slideIndex++;
+            if (slideIndex > slides.length) {
+                slideIndex = 1
+            }
+            slides[slideIndex - 1].style.display = "block";
+        }
+
+        var slideIndex = 0;
+        showSlides();
+
+        // Next/previous controls
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        // Thumbnail image controls
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+
+    </script>
+
 </body>
 
 </html>

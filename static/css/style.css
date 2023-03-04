@@ -7,7 +7,9 @@
 body {
   font-family: 'Roboto', sans-serif;
   background-color: black;
+  padding-bottom: 60px; 
 }
+
 
 .container {
   max-width: 1200px;
@@ -64,6 +66,15 @@ body {
   margin-top: 20px;
 }
 
+
+/* movies-card-code */
+
+.container-movies {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
 .movie-list {
   display: flex;
   flex-wrap: wrap;
@@ -95,15 +106,16 @@ body {
 }
 
 .movie-list__item-img {
-  height: 250px;
+  height: 450px;
   overflow: hidden;
 }
 
 .movie-list__item-img img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.2s ease-in-out;
+  object-position: center;
 }
 
 .movie-list__item-details {
@@ -117,6 +129,34 @@ body {
   margin: 0 0 10px 0;
   color: brown;
 }
+
+
+
+/* footer-section-code */
+
+
+.footer {
+  text-align: center;
+  color: #fff;
+  padding: 30px 0;
+}
+
+
+.footer__logo {
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+
+.footer__copyright {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+
+
 
 .movie-list__item-plot {
   font-size: 16px;
@@ -149,4 +189,85 @@ body {
   font-size: 1.5rem;
   font-weight: 700;
   margin-top: 50px;
+}
+
+
+/* slideshow-code */
+
+.slideshow-container{
+  position: relative;
+  left: 445px;
+}
+
+/* Hide the images by default */
+.mySlides {
+  display: none;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: blueviolet;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  left: 340px;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+ 
+/* navigation-bar-code */
+
+nav {
+  background-color: #000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.logo img {
+  height: 50px;
+  width: auto;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav li {
+  margin: 0 10px;
+}
+
+nav li a {
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+nav li a:hover {
+  background-color:#27ae60;
 }
